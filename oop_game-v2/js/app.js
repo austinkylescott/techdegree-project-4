@@ -4,8 +4,7 @@
 
 const game = new Game();
 const startButton = document.querySelector('#btn__reset');
-const keys = document.querySelectorAll('.key');
-console.log(keys);
+const keys = document.querySelector('#qwerty');
 
 startButton.addEventListener('click', (event) => {
 	game.startGame();
@@ -18,5 +17,7 @@ startButton.addEventListener('click', (event) => {
     not result in the handleInteraction() method being called.
 */
 keys.addEventListener('click', (event) => {
-	game.handleInteraction();
+	if (event.target.className === 'key') {
+		game.handleInteraction(event);
+	}
 });

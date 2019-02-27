@@ -4,11 +4,15 @@
 
 class Game {
 	constructor() {
-		let missed = 0;
-		let phrases = [];
-		let activePhrase = null;
-		const phrase = new Phrase('how are you');
-		phrase.addPhraseToDisplay();
+		this.missed = 0;
+		this.phrases = [
+			'Back up, kid!',
+			'I am angry',
+			'That smells funny',
+			'I learned it from Treehouse',
+			'Smile at the camera'
+		];
+		this.activePhrase = null;
 	}
 
 	startGame() {
@@ -16,13 +20,23 @@ class Game {
 		const overlay = document.querySelector('#overlay');
 		overlay.style.display = 'none';
 
-		getRandomPhrase();
+		this.activePhrase = this.getRandomPhrase();
+		this.activePhrase.addPhraseToDisplay();
 	}
 
-	getRandomPhrase() {}
+	getRandomPhrase() {
+		const index = Math.floor(Math.random() * this.phrases.length);
+		return new Phrase(this.phrases[index]);
+	}
 
-	handleInteraction() {
-		console.log('been clicked');
+	handleInteraction(event) {
+		const letter = event.target.textContent;
+		const isMatch = this.activePhrase.checkLetter(letter); //Check if letter exists in phrase
+		if (isMatch) {
+			this.activePhrase.showMatchedLetter(event); //Show all instances of matched letter
+		} else {
+			this.removeLife();
+		}
 	}
 
 	removeLife() {}
