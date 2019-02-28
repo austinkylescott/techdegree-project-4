@@ -19,6 +19,6 @@ startButton.addEventListener('click', (event) => {
 
 keys.addEventListener('click', (event) => {
 	if (event.target.className === 'key') {
-		game.handleInteraction(event);
+		game.handleInteraction(event.target);
 	}
 });

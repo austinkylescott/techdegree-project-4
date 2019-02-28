@@ -16,6 +16,12 @@ class Game {
 	}
 
 	startGame() {
+		//Ensures all hearts have been refilled
+		let hearts = document.querySelectorAll('.tries img');
+		hearts.forEach((heart) => {
+			heart.src = 'images/liveHeart.png';
+		});
+
 		//HIDE OVERLAY
 		const overlay = document.querySelector('#overlay');
 		overlay.style.display = 'none';
@@ -29,19 +35,19 @@ class Game {
 		return new Phrase(this.phrases[index]);
 	}
 
-	handleInteraction(event) {
-		const letter = event.target.textContent;
+	handleInteraction(target) {
+		const letter = target.textContent;
 		const isMatch = this.activePhrase.checkLetter(letter); //Check if letter exists in phrase
 
-		event.target.disabled = true;
+		target.disabled = true;
 
 		//Take action depending on whether or not selected letter matches a phrase letter
 		if (isMatch) {
 			this.activePhrase.showMatchedLetter(event); //Show all instances of matched letter
-			event.target.classList.add('chosen');
+			target.classList.add('chosen');
 		} else {
 			this.removeLife();
-			event.target.classList.add('wrong');
+			target.classList.add('wrong');
 		}
 
 		//Check for win after every letter is selected
@@ -54,10 +60,14 @@ class Game {
 	removeLife() {
 		this.missed++;
 
-		let hearts = document.querySelectorAll('.tries img'); //Selects all hearts
+		const hearts = document.querySelectorAll('.tries img'); //Selects all hearts
 		let targetHeart = hearts[hearts.length - this.missed]; //Targets last full heart
+		targetHeart.classList.add('animated', 'fast', 'heartBeat');
 
-		targetHeart.src = 'images/lostHeart.png';
+		targetHeart.addEventListener('animationend', () => {
+			targetHeart.classList.remove('animated', 'fast', 'heartBeat');
+			targetHeart.src = 'images/lostHeart.png';
+		});
 	}
 
 	checkForWin() {
@@ -82,6 +92,19 @@ class Game {
 		const winner = this.checkForWin();
 		let hearts = document.querySelectorAll('.tries img');
 
+		//CLEAN UP FOR NEW GAME
+		//Enable and reset all keys before next game begins
+		keys.forEach((key) => {
+			key.disabled = false;
+			key.className = 'key';
+		});
+
+		//Clears old phrase from game
+		document.querySelector('#phrase').innerHTML = '';
+
+		//Reset missed counter
+		this.missed = 0;
+
 		//Displays overlay and adjusts class and message accordingly
 		overlay.style.display = '';
 
@@ -92,23 +115,26 @@ class Game {
 			overlay.className = 'lose';
 			overlay.querySelector('#game-over-message').textContent = 'Sorry, try again!';
 		}
-
-		//CLEAN UP FOR NEW GAME
-		//Enable and reset all keys before next game begins
-		keys.forEach((key) => {
-			key.disabled = false;
-			key.className = 'key';
-		});
-
-		//Restore all hearts
-		hearts.forEach((heart) => {
+		/*
+		//Restore all hearts WILL NOT RESTORE THE FIRST HEART
+        //Added to startGame() to solve issues
+        hearts.forEach((heart) => {
 			heart.src = 'images/liveHeart.png';
-		});
-
-		//Clears old phrase from game
-		document.querySelector('#phrase').innerHTML = '';
-
-		//Reset missed counter
-		this.missed = 0;
+        });
+        */
 	}
+}
+
+function animateCSS(element, animationName, callback) {
+	const node = document.querySelector(element);
+	node.classList.add('animated', animationName);
+
+	function handleAnimationEnd() {
+		node.classList.remove('animated', animationName);
+		node.removeEventListener('animationend', handleAnimationEnd);
+
+		if (typeof callback === 'function') callback();
+	}
+
+	node.addEventListener('animationend', handleAnimationEnd);
 }
