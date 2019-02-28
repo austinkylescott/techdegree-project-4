@@ -48,10 +48,10 @@ class Phrase {
 		return isMatch;
 	}
 	//Shows all instances of a matched letter
-	showMatchedLetter(event) {
+	showMatchedLetter(target) {
 		const letters = document.querySelectorAll('.letter');
 		letters.forEach((letter) => {
-			if (letter.textContent === event.target.textContent) {
+			if (letter.textContent === target.textContent) {
 				letter.classList.add('show');
 				letter.classList.remove('hide');
 			}

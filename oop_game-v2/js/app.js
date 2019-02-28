@@ -4,7 +4,8 @@
 
 const game = new Game();
 const startButton = document.querySelector('#btn__reset');
-const keys = document.querySelector('#qwerty');
+const keyGroup = document.querySelector('#qwerty');
+const keys = document.querySelectorAll('.key');
 
 startButton.addEventListener('click', (event) => {
 	game.startGame();
@@ -17,8 +18,28 @@ startButton.addEventListener('click', (event) => {
     not result in the handleInteraction() method being called.
 */
 
-keys.addEventListener('click', (event) => {
+keyGroup.addEventListener('click', (event) => {
 	if (event.target.className === 'key') {
 		game.handleInteraction(event.target);
+	}
+});
+
+document.addEventListener('keyup', (event) => {
+	const overlay = document.querySelector('#overlay');
+
+	/*Only acts on keyup when
+	 *overlay is hidden
+     *the key is enabled
+    **/
+
+	for (let i = 0; i < keys.length; i++) {
+		if (overlay.style.display == 'none') {
+			if (keys[i].disabled == false) {
+				if (event.key === keys[i].textContent) {
+					game.handleInteraction(keys[i]);
+					console.log(keys[i]);
+				}
+			}
+		}
 	}
 });

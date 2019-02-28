@@ -43,7 +43,7 @@ class Game {
 
 		//Take action depending on whether or not selected letter matches a phrase letter
 		if (isMatch) {
-			this.activePhrase.showMatchedLetter(event); //Show all instances of matched letter
+			this.activePhrase.showMatchedLetter(target); //Show all instances of matched letter
 			target.classList.add('chosen');
 		} else {
 			this.removeLife();
