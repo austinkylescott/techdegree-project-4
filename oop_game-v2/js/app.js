@@ -16,6 +16,7 @@ startButton.addEventListener('click', (event) => {
     Clicking the space between and around the onscreen keyboard buttons should 
     not result in the handleInteraction() method being called.
 */
+
 keys.addEventListener('click', (event) => {
 	if (event.target.className === 'key') {
 		game.handleInteraction(event);
