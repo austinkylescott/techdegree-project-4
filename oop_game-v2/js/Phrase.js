@@ -35,7 +35,6 @@ class Phrase {
 
 		phraseDiv.appendChild(ul);
 		document.querySelector('#phrase').innerHTML = phraseDiv.innerHTML;
-		console.log(document.body);
 	}
 
 	//Checks if letter exists within phrase and returns true or false
