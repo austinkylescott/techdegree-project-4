@@ -37,7 +37,6 @@ document.addEventListener('keyup', (event) => {
 			if (keys[i].disabled == false) {
 				if (event.key === keys[i].textContent) {
 					game.handleInteraction(keys[i]);
-					console.log(keys[i]);
 				}
 			}
 		}
